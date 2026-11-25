@@ -125,7 +125,7 @@ footer { margin-top: 40px; color: var(--muted); font-size: 0.88rem; }
     <p class="eyebrow">Proof it was built in Lens Studio</p>
     <h2 id="proof-h" style="margin-top:8px">The full commit history</h2>
     <p>Each change was committed as it happened. The repository holds the complete Lens Studio project: the scene, 40+ TypeScript scripts, the generated models and the 23 LEAF test scenarios that run in Lens Studio's Preview. Anyone can open it in Lens Studio 5.23.2 and run it.
-      Repository: <a href="https://github.com/czutorszonja/AR_SPECS_DevPost_Hackaton">github.com/czutorszonja/AR_SPECS_DevPost_Hackaton</a></p>
+      Repository: <a href="https://github.com/czutorszonja/Small_Wins_SPECS_DevPost_Hackaton">github.com/czutorszonja/Small_Wins_SPECS_DevPost_Hackaton</a></p>
     <div class="shots wide" style="margin-top:20px">
       <figure class="shot"><button type="button" data-src="img/s056.jpg" data-cap="4 Nov 16:17. LEAF test c3-sit-and-stand PASSED in the Preview."><img src="img/s056.jpg" alt="LEAF test passing in the Lens Studio Preview" loading="lazy"></button><figcaption>4 Nov 16:17 · A LEAF test passing in the Preview</figcaption></figure>
       <figure class="shot"><button type="button" data-src="img/s157.jpg" data-cap="7 Nov 22:42. Lens Studio logger: LEAF loaded 23 scenarios."><img src="img/s157.jpg" alt="Lens Studio logger showing 23 LEAF scenarios loaded" loading="lazy"></button><figcaption>7 Nov 22:42 · Logger: "Loaded 23 scenario(s)"</figcaption></figure>
@@ -212,7 +212,7 @@ document.getElementById("timeline").innerHTML = stages.map(s => `
     </div>
   </article>`).join("");
 
-const repo = "https://github.com/czutorszonja/AR_SPECS_DevPost_Hackaton/commit/";
+const repo = "https://github.com/czutorszonja/Small_Wins_SPECS_DevPost_Hackaton/commit/";
 document.getElementById("log").innerHTML = log.split("\n").map(l => {
   const [md, time, hash, ...msg] = l.split(" ");
   const [m, d] = md.split("-");
