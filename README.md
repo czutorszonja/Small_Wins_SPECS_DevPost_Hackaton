@@ -46,6 +46,7 @@ To watch the whole demo play by itself, open the LEAF panel in Lens Studio and r
 | [`Small_wins_project_SPECS_Hackaton/Assets/Scripts`](Small_wins_project_SPECS_Hackaton/Assets/Scripts) | The app's code |
 | [`Small_wins_project_SPECS_Hackaton/Assets/Tests`](Small_wins_project_SPECS_Hackaton/Assets/Tests) | The automated tests |
 | [`devpost/design-brief.md`](devpost/design-brief.md) | The design brief |
+| [`Small_wins_project_SPECS_Hackaton/Development_Timeline`](Small_wins_project_SPECS_Hackaton/Development_Timeline) | How it was built, stage by stage, with dated screenshots from Lens Studio (download and open `index.html`) |
 
 ## Copyright
 

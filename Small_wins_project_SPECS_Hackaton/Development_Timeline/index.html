@@ -1,0 +1,231 @@
+<title>Small Wins Build Diary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column with a date rail on the left; each day is a stop on the rail, screenshots sit in a grid under it. */
+:root {
+  --bg: #f7f5ef;
+  --surface: #ffffff;
+  --fg: #1d2b29;
+  --muted: #5d6b68;
+  --line: #d9ddd6;
+  --teal: #1a756e;
+  --teal-soft: #dcefe9;
+  --warm: #c8643b;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121a19; --surface: #1a2423; --fg: #e9eeec; --muted: #9fb0ac; --line: #2c3a38;
+    --teal: #4fb8ad; --teal-soft: #1d3633; --warm: #e58a62; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121a19; --surface: #1a2423; --fg: #e9eeec; --muted: #9fb0ac; --line: #2c3a38;
+  --teal: #4fb8ad; --teal-soft: #1d3633; --warm: #e58a62; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.6 var(--body); }
+.wrap { max-width: 1060px; margin: 0 auto; padding-block: 48px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; line-height: 1.2; }
+h3 { font-size: 1.25rem; line-height: 1.25; }
+p { margin: 0; }
+.lede { max-width: 64ch; color: var(--muted); font-size: 1.08rem; margin-top: 16px; }
+.eyebrow { font: 600 0.75rem/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 32px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.fact b { display: block; font: 600 1.6rem/1.1 var(--display); color: var(--teal); font-variant-numeric: tabular-nums; }
+.fact span { color: var(--muted); font-size: 0.88rem; }
+
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+.compare figure { margin: 0; }
+.compare figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 8px; }
+.compare .tag { font: 600 0.75rem/1 var(--body); letter-spacing: 0.1em; text-transform: uppercase; }
+.compare .before .tag { color: var(--warm); }
+.compare .after .tag { color: var(--teal); }
+
+.timeline { margin-top: 64px; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+.stage { position: relative; padding-left: 36px; padding-bottom: 56px; }
+.stage::before { content: ""; position: absolute; left: 0; top: 6px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--teal); }
+.when { font: 500 0.85rem/1 var(--mono); color: var(--teal); font-variant-numeric: tabular-nums; }
+.stage h3 { margin-top: 8px; }
+.story { max-width: 68ch; margin-top: 10px; }
+.notes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; margin-top: 12px; max-width: 900px; }
+.notes div { min-width: 0; }
+.notes dt { font: 600 0.72rem/1.4 var(--body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.notes dd { margin: 2px 0 0; }
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 18px; }
+.shots.wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.shot { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.shot button { display: block; width: 100%; padding: 0; border: 0; background: #2a2a2a; cursor: zoom-in; }
+.shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; }
+.shot button:focus-visible { outline: 3px solid var(--teal); outline-offset: -3px; }
+.shot figcaption { font-size: 0.82rem; color: var(--muted); padding: 7px 10px 9px; line-height: 1.4; }
+.compare .shot img { aspect-ratio: 16 / 10; }
+
+.proof { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 28px clamp(16px, 4vw, 32px); }
+.proof > p { color: var(--muted); max-width: 70ch; margin-top: 10px; }
+.log-scroll { overflow-x: auto; margin-top: 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th { text-align: left; font: 600 0.72rem/1 var(--body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0 12px 10px 0; border-bottom: 1px solid var(--line); }
+td { padding: 7px 12px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.t, td.h { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+td.h a { color: var(--teal); }
+a { color: var(--teal); }
+footer { margin-top: 40px; color: var(--muted); font-size: 0.88rem; }
+
+.lightbox { position: fixed; inset: 0; background: rgba(8, 14, 13, 0.92); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px; z-index: 20;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: 82vh; border-radius: 6px; }
+.lightbox p { color: #e9eeec; font-size: 0.95rem; text-align: center; max-width: 70ch; }
+.lightbox button { font: 600 0.9rem var(--body); color: #fff; background: #1a756e; border: 0; border-radius: 8px; padding: 9px 18px; cursor: pointer; }
+
+@media (max-width: 640px) {
+  .compare, .notes { grid-template-columns: 1fr; }
+  .stage { padding-left: 28px; }
+}
+@media (prefers-reduced-motion: no-preference) { .shot img { transition: transform .2s; } .shot button:hover img { transform: scale(1.02); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Small Wins · Lens Studio 5.23.2 · Spectacles</p>
+    <h1 style="margin-top:12px">From flat boxes to a lived-in flat</h1>
+    <p class="lede">How Small Wins was built from 3 to 8 November 2026: from boxes to a home, toned down, and one crowded notebook split into simple cards. Every picture is a screenshot taken inside Lens Studio while I was building it: the Preview panel, and sometimes the whole editor with the scene hierarchy, scripts and test panels. The times come from the screenshot files and match the git history at the bottom.</p>
+    <div class="facts">
+      <div class="fact"><b>6 days</b><span>3 – 8 Nov 2026</span></div>
+      <div class="fact"><b>318</b><span>screenshots during the build</span></div>
+      <div class="fact"><b>33</b><span>git commits, all public</span></div>
+      <div class="fact"><b>23</b><span>LEAF test scenarios</span></div>
+      <div class="fact"><b>~30</b><span>generated 3D models</span></div>
+    </div>
+  </header>
+
+  <section class="compare" aria-label="First and final build">
+    <figure class="before shot"><button type="button" data-src="img/s001.jpg" data-cap="3 Nov, 22:22. The first room in the Lens Studio editor: flat coloured boxes over the default grid."><img src="img/s001.jpg" alt="Lens Studio editor showing the first flat, blocky placeholder room" loading="eager"></button>
+      <figcaption><span class="tag">First build · 3 Nov</span><br>Flat coloured boxes in the Lens Studio editor, with the grid floor showing through.</figcaption></figure>
+    <figure class="after shot"><button type="button" data-src="img/g_12_The_Flat.jpg" data-cap="Submitted version: the finished flat."><img src="img/g_12_The_Flat.jpg" alt="Finished Small Wins flat with textured furniture and warm light"></button>
+      <figcaption><span class="tag">Submitted · 8 Nov</span><br>Textured 3D models, a closed room and warm light.</figcaption></figure>
+  </section>
+
+  <div class="timeline" id="timeline"></div>
+
+  <section class="proof" aria-labelledby="proof-h">
+    <p class="eyebrow">Proof it was built in Lens Studio</p>
+    <h2 id="proof-h" style="margin-top:8px">The full commit history</h2>
+    <p>Each change was committed as it happened. The repository holds the complete Lens Studio project: the scene, 40+ TypeScript scripts, the generated models and the 23 LEAF test scenarios that run in Lens Studio's Preview. Anyone can open it in Lens Studio 5.23.2 and run it.
+      Repository: <a href="https://github.com/czutorszonja/AR_SPECS_DevPost_Hackaton">github.com/czutorszonja/AR_SPECS_DevPost_Hackaton</a></p>
+    <div class="shots wide" style="margin-top:20px">
+      <figure class="shot"><button type="button" data-src="img/s056.jpg" data-cap="4 Nov 16:17. LEAF test c3-sit-and-stand PASSED in the Preview."><img src="img/s056.jpg" alt="LEAF test passing in the Lens Studio Preview" loading="lazy"></button><figcaption>4 Nov 16:17 · A LEAF test passing in the Preview</figcaption></figure>
+      <figure class="shot"><button type="button" data-src="img/s157.jpg" data-cap="7 Nov 22:42. Lens Studio logger: LEAF loaded 23 scenarios."><img src="img/s157.jpg" alt="Lens Studio logger showing 23 LEAF scenarios loaded" loading="lazy"></button><figcaption>7 Nov 22:42 · Logger: "Loaded 23 scenario(s)"</figcaption></figure>
+      <figure class="shot"><button type="button" data-src="img/s290.jpg" data-cap="8 Nov 13:42. LEAF panel with the demo-recording scenario used to record the video."><img src="img/s290.jpg" alt="LEAF panel with the demo-recording scenario" loading="lazy"></button><figcaption>8 Nov 13:42 · The scenario that recorded the demo video</figcaption></figure>
+    </div>
+    <div class="log-scroll"><table>
+      <thead><tr><th>When</th><th>Commit</th><th>What changed</th></tr></thead>
+      <tbody id="log"></tbody>
+    </table></div>
+  </section>
+
+  <footer>Small Wins by Szonja Czutor. Built in Lens Studio for Spectacles during the Learn AR with SPECS hackathon. All rights reserved.</footer>
+</div>
+
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Screenshot">
+  <img id="lb-img" alt="">
+  <p id="lb-cap"></p>
+  <button type="button" id="lb-close">Close</button>
+</div>
+
+<script>
+const stages = [
+  { when: "3 Nov · 22:22", title: "Where it started: a room made of boxes",
+    story: "The first working version already had chores, a reward, breathing, a door and a notebook, each with a LEAF test. But the room was flat coloured boxes, and Lens Studio's grey grid floor showed straight through it.",
+    shots: [["s001.jpg", "3 Nov 22:22 · The first room in the Lens Studio editor"], ["s004.jpg", "3 Nov 22:22 · Floor and cabinets as flat colour blocks"]] },
+  { when: "3 – 6 Nov", title: "Building it up: real models and a real home",
+    story: "Every box was replaced with a generated, textured 3D model, one object at a time: first the sofa, then the door, plants and laundry corner. The room grew to 6.7 × 5.5 m and was arranged into a kitchen, a living area, a dining table and a bedroom, then filled with the details that make a home: books, a dresser, a cat.",
+    shots: [["s008.jpg", "3 Nov 22:51 · The first generated model: a sofa"], ["s020.jpg", "4 Nov 00:13 · Painted walls, a door and a plant"], ["s022.jpg", "4 Nov 00:14 · Laundry corner and wardrobe"], ["s065.jpg", "4 Nov 17:38 · Bookshelf and dresser"], ["s064.jpg", "4 Nov 17:38 · A bedroom doorway"], ["s092.jpg", "6 Nov 15:40 · The cat waiting by its bowl"], ["s093.jpg", "6 Nov 15:40 · The dining table"], ["s210.jpg", "8 Nov 01:11 · The finished bedroom corner"]] },
+  { when: "4 – 7 Nov", title: "Toning it down",
+    story: "The first restyle was too loud: patterned tiles in every colour and a bright teal wall. I calmed it into warm, soft colours that feel restful, which suits an app about rest. The light then had to be fixed: Lens Studio's preview backdrop either made the room dark or let a horizon line and grey haze through. A custom black backdrop fixed it, and the room went back to full brightness.",
+    shots: [["s026.jpg", "4 Nov 15:03 · Too busy: patterned tiles everywhere"], ["s027.jpg", "4 Nov 15:04 · Too bright: a teal living-room wall"], ["s056.jpg", "4 Nov 16:17 · Calmer: soft tiles and warm walls (LEAF test passing)"], ["s126.jpg", "7 Nov 21:29 · The \"Evening Room\" backdrop made it too dark"], ["s163.jpg", "7 Nov 23:05 · Fixed: full brightness, scene editor and Preview side by side"]], wide: true },
+  { when: "4 – 8 Nov", title: "From one crowded notebook to one job per card",
+    story: "At first everything lived in one big notebook: the to-do list, ticks, stickers, edit and remove buttons, reduced motion and the me-time exercises, all on one screen. It was too much to take in at once. So it was broken up: raising your hand now shows three simple choices, Me-time, Today's wins and To-do list, and each opens its own card with just that one thing on it. The final cards are calm and see-through, so the room stays visible.",
+    shots: [["s058.jpg", "4 Nov 16:28 · Everything in one notebook"], ["s072.jpg", "4 Nov 17:50 · Still one crowded block"], ["s079.jpg", "5 Nov 19:22 · Tabs inside the same big notebook"], ["s086.jpg", "6 Nov 15:34 · Broken up: three choices in the hand menu"], ["s087.jpg", "6 Nov 15:35 · To-do list on its own card"], ["s096.jpg", "6 Nov 15:42 · Today's wins on its own card"], ["s300.jpg", "8 Nov 14:12 · Final: the day planner, see-through"], ["s308.jpg", "8 Nov 14:24 · Final: yesterday's 4 small wins"]] },
+  { when: "8 Nov · submitted", title: "The finished app",
+    story: "All of it working together in the demo. These are from the Devpost gallery.",
+    shots: [["g_12_The_Flat.jpg", "The flat"], ["g_01_Sticker_Reward.jpg", "Sticker reward"], ["g_04_Plan_Your_Day.jpg", "Plan your day"], ["g_08_Box_Breathing.jpg", "Box breathing"], ["g_10_Todays_Wins.jpg", "Today's wins"], ["g_11_Outside_Quest.jpg", "Outside quest"]], wide: true }
+];
+
+const log = `11-01 16:42 ad46396 Initial SPECS Lens Studio project with Devpost plan-lens skill
+11-03 18:17 6638340 Add approved Small Wins design brief and reference designs
+11-03 19:23 5d25362 Add Small Wins Lens Studio project with SIK, UIKit and LEAF
+11-03 19:50 c718ca4 Build Small Wins room, chores, reward, breathing, door and notebook
+11-03 20:02 4bb7b55 Add LEAF scenarios for every done criterion and fix notebook rebuild
+11-03 20:24 247dc20 Fix image sizing and readability from preview review; finish Small Wins
+11-03 23:04 98edb69 Replace placeholder room with generated models and painted textures
+11-04 04:14 3162c82 Enlarge room to 6.7 x 5.5 m and add preview turning with wall limits
+11-04 15:21 b68e4af Bring messages into view, fix the floating outside picture, restyle the room
+11-04 15:35 750deab Keep following content at a set distance, add the floor lamp, enlarge the door sign
+11-04 16:40 4c1a7f2 Grow the room, tap the door to open it, sit on the sofa, quicken the sticker
+11-04 17:11 a435c4f Update the design brief to match the build after preview feedback
+11-04 18:38 f350591 Arrange the room into zones, add a bedroom doorway, make cards easy to read
+11-05 20:31 633f5dd Add a Me-time tab with eye movement and guided drawing, and hand-sized buttons
+11-06 14:51 d288c6b Remove the unused starter project and duplicate skill copy
+11-06 16:05 1eaee62 Smaller notebook cards, jobs around the flat, a fuller drawing, clearer dots
+11-06 16:22 d238785 Make the sent-message card bigger and teal, light up the phone screen
+11-06 16:38 e32c833 Add a hands-free demo run that walks up to each task, for recording the video
+11-06 17:13 bd9f865 Calmer demo camera, a slightly smaller room, and a steady drawing sheet
+11-06 18:02 e404628 Celebratory me-time stickers, cards that follow your gaze, a tighter demo
+11-06 22:43 86548db Earn your break, list first in the hand menu, a shorter demo drawing
+11-07 00:26 5eaa73b A day planner, floating sticker holders, and a sub-3-minute demo
+11-07 01:16 1e92d88 Carried items stay in front, the can goes home, reading lives by the books
+11-07 23:25 48124e1 A clearer dishwasher, the room at full brightness, and a steadier demo
+11-08 01:19 1994ae6 Feed the cat in the demo, show sticker holders appear, steadier carrying
+11-08 11:35 2118cdf Teal-edged sticker holders that stand out on the warm walls
+11-08 11:44 b87090f Hold the demo's closing view a little longer
+11-08 12:14 a1624ab Stop the door sign flickering against the door frame
+11-08 17:41 cae2dc7 Calmer see-through cards in one teal, and a steadier demo
+11-08 18:18 e8eacab Bring the design brief up to date with the app
+11-08 21:14 33879bb Add a copyright notice and a short README
+11-09 12:49 24aaeb5 Say plainly that the licence is not permissive
+11-09 13:36 85c4c57 Explain the project and how to try it in the README`;
+
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const months = { "11": "Nov" };
+document.getElementById("timeline").innerHTML = stages.map(s => `
+  <article class="stage">
+    <p class="when">${esc(s.when)}</p>
+    <h3>${esc(s.title)}</h3>
+    <p class="story">${esc(s.story)}</p>
+    <div class="shots${s.wide ? " wide" : ""}">${s.shots.map(([f, c]) => `
+      <figure class="shot"><button type="button" data-src="img/${f}" data-cap="${esc(s.when.split(" · ")[0] + ". " + c)}"><img src="img/${f}" alt="${esc(c)}" loading="lazy"></button>
+      <figcaption>${esc(c)}</figcaption></figure>`).join("")}
+    </div>
+  </article>`).join("");
+
+const repo = "https://github.com/czutorszonja/AR_SPECS_DevPost_Hackaton/commit/";
+document.getElementById("log").innerHTML = log.split("\n").map(l => {
+  const [md, time, hash, ...msg] = l.split(" ");
+  const [m, d] = md.split("-");
+  return `<tr><td class="t">${+d} ${months[m]} ${time}</td><td class="h"><a href="${repo}${hash}">${hash}</a></td><td>${esc(msg.join(" "))}</td></tr>`;
+}).join("");
+
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
+let opener = null;
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-src]");
+  if (b) { opener = b; lbImg.src = b.dataset.src; lbImg.alt = b.dataset.cap; lbCap.textContent = b.dataset.cap; lb.hidden = false; document.getElementById("lb-close").focus(); return; }
+  if (!lb.hidden && (e.target === lb || e.target.id === "lb-close")) close();
+});
+function close() { lb.hidden = true; lbImg.removeAttribute("src"); if (opener) opener.focus(); }
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !lb.hidden) close(); });
+</script>
